@@ -16,9 +16,9 @@ type Query {
 }
 
 type SuggestionsPayload {
-  dependencies: [Package!]!
-  devDependencies: [Package!]!
-  allDependencies: [Package!]!
+  suggestions: [Package!]!
+  devSuggestions: [Package!]!
+  allSuggestions: [Package!]!
 }
 
 type Package {
