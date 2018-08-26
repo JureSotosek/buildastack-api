@@ -1,0 +1,28 @@
+type Query {
+  suggestions(
+    dependencies: [String]
+    devDependencies: [String]
+    limit: Int
+  ): suggestionsPayload!
+  search(query: String!): [Package!]!
+}
+
+type suggestionsPayload {
+  dependencies: [Package!]!
+  devDependencies: [Package!]!
+  allDependencies: [Package!]!
+}
+
+type Package {
+  name: String!
+  version: String!
+  description: String
+  owner: Owner!
+  humanDownloadsLast30Days: String!
+  objectID: String!
+  popular: Boolean!
+}
+
+type Owner {
+  name: String!
+}
