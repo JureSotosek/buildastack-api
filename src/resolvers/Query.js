@@ -7,7 +7,7 @@ const Query = {
   },
 
   async search(parent, args, ctx, info) {
-    const response = await algoliaSearch(args.uery);
+    const response = await algoliaSearch(args.query);
 
     return response.hits;
   }
