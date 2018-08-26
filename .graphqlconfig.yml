@@ -3,4 +3,8 @@ projects:
     schemaPath: src/schema.graphql
     extensions:
       endpoints:
-        default: https://emma-suggestions.herokuapp.com:4000
+        default: https://api.buildastack.io/
+  database:
+    schemaPath: src/generated/prisma.graphql
+    extensions:
+      prisma: database/prisma.yml

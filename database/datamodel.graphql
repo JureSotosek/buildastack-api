@@ -1,0 +1,11 @@
+type Stack {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  dependencies: [Dependency!]!
+}
+
+type Dependency {
+  name: String!
+  version: String!
+}
