@@ -1,5 +1,5 @@
 # source: https://buildastack-prisma.herokuapp.com/buildastack/dev
-# timestamp: Sun Aug 26 2018 19:50:15 GMT+0200 (Central European Summer Time)
+# timestamp: Sun Aug 26 2018 22:29:13 GMT+0200 (Central European Summer Time)
 
 type AggregateDependency {
   count: Int!
@@ -19,6 +19,7 @@ scalar DateTime
 type Dependency {
   name: String!
   version: String!
+  dev: Boolean!
 }
 
 """A connection to a list of items."""
@@ -34,6 +35,7 @@ type DependencyConnection {
 input DependencyCreateInput {
   name: String!
   version: String!
+  dev: Boolean!
 }
 
 input DependencyCreateManyInput {
@@ -54,6 +56,8 @@ enum DependencyOrderByInput {
   name_DESC
   version_ASC
   version_DESC
+  dev_ASC
+  dev_DESC
   id_ASC
   id_DESC
   updatedAt_ASC
@@ -65,6 +69,7 @@ enum DependencyOrderByInput {
 type DependencyPreviousValues {
   name: String!
   version: String!
+  dev: Boolean!
 }
 
 type DependencySubscriptionPayload {
@@ -109,6 +114,7 @@ input DependencySubscriptionWhereInput {
 input DependencyUpdateInput {
   name: String
   version: String
+  dev: Boolean
 }
 
 input DependencyUpdateManyInput {
@@ -204,9 +210,13 @@ input DependencyWhereInput {
 
   """All values not ending with the given string."""
   version_not_ends_with: String
-  _MagicalBackRelation_DependencyToStack_every: StackWhereInput
-  _MagicalBackRelation_DependencyToStack_some: StackWhereInput
-  _MagicalBackRelation_DependencyToStack_none: StackWhereInput
+  dev: Boolean
+
+  """All values that are not equal to given value."""
+  dev_not: Boolean
+  _MagicalBackRelation_Dependencies_every: StackWhereInput
+  _MagicalBackRelation_Dependencies_some: StackWhereInput
+  _MagicalBackRelation_Dependencies_none: StackWhereInput
 }
 
 """

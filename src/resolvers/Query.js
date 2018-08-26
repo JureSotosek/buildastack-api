@@ -10,6 +10,10 @@ const Query = {
     const response = await algoliaSearch(args.query);
 
     return response.hits;
+  },
+
+  async stack(parent, args, ctx, info) {
+    return ctx.db.query.stack({ where: { id: args.id } }, info);
   }
 };
 

@@ -12,10 +12,10 @@ type Query {
     dependencies: [String]
     devDependencies: [String]
     limit: Int
-  ): suggestionsPayload!
+  ): SuggestionsPayload!
 }
 
-type suggestionsPayload {
+type SuggestionsPayload {
   dependencies: [Package!]!
   devDependencies: [Package!]!
   allDependencies: [Package!]!
@@ -47,8 +47,15 @@ const schema = makeRemoteExecutableSchema({
   link
 });
 
-function suggestions(args, ctx, info) {
-  return delegateToSchema(schema, {}, 'query', 'suggestions', args, ctx, info);
+function suggestions(args, context, info) {
+  return delegateToSchema({
+    schema,
+    operation: 'query',
+    fieldName: 'suggestions',
+    args,
+    context,
+    info
+  });
 }
 
 module.exports = { suggestions };

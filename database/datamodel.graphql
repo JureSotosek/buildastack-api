@@ -3,9 +3,11 @@ type Stack {
   createdAt: DateTime!
   updatedAt: DateTime!
   dependencies: [Dependency!]!
+    @relation(name: "Dependencies", onDelete: CASCADE)
 }
 
 type Dependency {
   name: String!
   version: String!
+  dev: Boolean!
 }

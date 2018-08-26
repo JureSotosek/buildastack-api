@@ -3,11 +3,12 @@ type Query {
     dependencies: [String]
     devDependencies: [String]
     limit: Int
-  ): suggestionsPayload!
+  ): SuggestionsPayload!
   search(query: String!): [Package!]!
+  stack(id: ID!): Stack
 }
 
-type suggestionsPayload {
+type SuggestionsPayload {
   dependencies: [Package!]!
   devDependencies: [Package!]!
   allDependencies: [Package!]!
@@ -25,4 +26,25 @@ type Package {
 
 type Owner {
   name: String!
+}
+
+type Mutation {
+  createStack(dependencies: [InputDependency!]!): Stack!
+}
+
+input InputDependency {
+  name: String!
+  version: String!
+  dev: Boolean!
+}
+
+type Stack {
+  id: ID!
+  dependencies: [Dependency!]!
+}
+
+type Dependency {
+  name: String!
+  version: String!
+  dev: Boolean!
 }
