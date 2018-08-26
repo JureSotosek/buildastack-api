@@ -1,8 +1,7 @@
 const {
   makeExecutableSchema,
   makeRemoteExecutableSchema,
-  delegateToSchema,
-  introspectSchema
+  delegateToSchema
 } = require('graphql-tools');
 const { HttpLink } = require('apollo-link-http');
 const fetch = require('node-fetch');
