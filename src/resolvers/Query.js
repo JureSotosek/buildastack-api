@@ -1,5 +1,5 @@
-const { search: algoliaSearch } = require('../algolia');
-const { suggestions } = require('../suggestions');
+const { search: algoliaSearch } = require('../lib/algolia');
+const { suggestions } = require('../lib/suggestions');
 
 const Query = {
   suggestions(parent, args, ctx, info) {
