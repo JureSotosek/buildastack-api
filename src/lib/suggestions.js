@@ -9,8 +9,8 @@ const fetch = require('node-fetch');
 const suggestionsSchemaString = `
 type Query {
   suggestions(
-    dependencies: [String]
-    devDependencies: [String]
+    dependencies: [String!]
+    devDependencies: [String!]
     limit: Int
   ): SuggestionsPayload!
 }
