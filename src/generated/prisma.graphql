@@ -1,11 +1,15 @@
 # source: https://buildastack-prisma.herokuapp.com/buildastack/dev
-# timestamp: Sun Aug 26 2018 22:29:13 GMT+0200 (Central European Summer Time)
+# timestamp: Thu Aug 30 2018 22:19:08 GMT+0200 (Central European Summer Time)
 
 type AggregateDependency {
   count: Int!
 }
 
 type AggregateStack {
+  count: Int!
+}
+
+type AggregateUser {
   count: Int!
 }
 
@@ -226,13 +230,19 @@ Long can represent values between -(2^63) and 2^63 - 1.
 scalar Long
 
 type Mutation {
+  createUser(data: UserCreateInput!): User!
   createStack(data: StackCreateInput!): Stack!
   createDependency(data: DependencyCreateInput!): Dependency!
+  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateStack(data: StackUpdateInput!, where: StackWhereUniqueInput!): Stack
+  deleteUser(where: UserWhereUniqueInput!): User
   deleteStack(where: StackWhereUniqueInput!): Stack
+  upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   upsertStack(where: StackWhereUniqueInput!, create: StackCreateInput!, update: StackUpdateInput!): Stack!
+  updateManyUsers(data: UserUpdateInput!, where: UserWhereInput): BatchPayload!
   updateManyStacks(data: StackUpdateInput!, where: StackWhereInput): BatchPayload!
   updateManyDependencies(data: DependencyUpdateInput!, where: DependencyWhereInput): BatchPayload!
+  deleteManyUsers(where: UserWhereInput): BatchPayload!
   deleteManyStacks(where: StackWhereInput): BatchPayload!
   deleteManyDependencies(where: DependencyWhereInput): BatchPayload!
 }
@@ -265,9 +275,12 @@ type PageInfo {
 }
 
 type Query {
+  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   stacks(where: StackWhereInput, orderBy: StackOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Stack]!
   dependencies(where: DependencyWhereInput, orderBy: DependencyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Dependency]!
+  user(where: UserWhereUniqueInput!): User
   stack(where: StackWhereUniqueInput!): Stack
+  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
   stacksConnection(where: StackWhereInput, orderBy: StackOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StackConnection!
   dependenciesConnection(where: DependencyWhereInput, orderBy: DependencyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DependencyConnection!
 
@@ -283,6 +296,7 @@ type Stack implements Node {
   createdAt: DateTime!
   updatedAt: DateTime!
   dependencies(where: DependencyWhereInput, orderBy: DependencyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Dependency!]
+  user(where: UserWhereInput): User
 }
 
 """A connection to a list of items."""
@@ -296,6 +310,16 @@ type StackConnection {
 }
 
 input StackCreateInput {
+  dependencies: DependencyCreateManyInput
+  user: UserCreateOneWithoutStacksInput
+}
+
+input StackCreateManyWithoutUserInput {
+  create: [StackCreateWithoutUserInput!]
+  connect: [StackWhereUniqueInput!]
+}
+
+input StackCreateWithoutUserInput {
   dependencies: DependencyCreateManyInput
 }
 
@@ -364,6 +388,31 @@ input StackSubscriptionWhereInput {
 
 input StackUpdateInput {
   dependencies: DependencyUpdateManyInput
+  user: UserUpdateOneWithoutStacksInput
+}
+
+input StackUpdateManyWithoutUserInput {
+  create: [StackCreateWithoutUserInput!]
+  connect: [StackWhereUniqueInput!]
+  disconnect: [StackWhereUniqueInput!]
+  delete: [StackWhereUniqueInput!]
+  update: [StackUpdateWithWhereUniqueWithoutUserInput!]
+  upsert: [StackUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input StackUpdateWithoutUserDataInput {
+  dependencies: DependencyUpdateManyInput
+}
+
+input StackUpdateWithWhereUniqueWithoutUserInput {
+  where: StackWhereUniqueInput!
+  data: StackUpdateWithoutUserDataInput!
+}
+
+input StackUpsertWithWhereUniqueWithoutUserInput {
+  where: StackWhereUniqueInput!
+  update: StackUpdateWithoutUserDataInput!
+  create: StackCreateWithoutUserInput!
 }
 
 input StackWhereInput {
@@ -462,6 +511,7 @@ input StackWhereInput {
   dependencies_every: DependencyWhereInput
   dependencies_some: DependencyWhereInput
   dependencies_none: DependencyWhereInput
+  user: UserWhereInput
 }
 
 input StackWhereUniqueInput {
@@ -469,6 +519,319 @@ input StackWhereUniqueInput {
 }
 
 type Subscription {
+  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
   stack(where: StackSubscriptionWhereInput): StackSubscriptionPayload
   dependency(where: DependencySubscriptionWhereInput): DependencySubscriptionPayload
+}
+
+type User implements Node {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  githubId: String!
+  name: String!
+  stacks(where: StackWhereInput, orderBy: StackOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Stack!]
+}
+
+"""A connection to a list of items."""
+type UserConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [UserEdge]!
+  aggregate: AggregateUser!
+}
+
+input UserCreateInput {
+  githubId: String!
+  name: String!
+  stacks: StackCreateManyWithoutUserInput
+}
+
+input UserCreateOneWithoutStacksInput {
+  create: UserCreateWithoutStacksInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateWithoutStacksInput {
+  githubId: String!
+  name: String!
+}
+
+"""An edge in a connection."""
+type UserEdge {
+  """The item at the end of the edge."""
+  node: User!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum UserOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  githubId_ASC
+  githubId_DESC
+  name_ASC
+  name_DESC
+}
+
+type UserPreviousValues {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  githubId: String!
+  name: String!
+}
+
+type UserSubscriptionPayload {
+  mutation: MutationType!
+  node: User
+  updatedFields: [String!]
+  previousValues: UserPreviousValues
+}
+
+input UserSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [UserSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [UserSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [UserSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: UserWhereInput
+}
+
+input UserUpdateInput {
+  githubId: String
+  name: String
+  stacks: StackUpdateManyWithoutUserInput
+}
+
+input UserUpdateOneWithoutStacksInput {
+  create: UserCreateWithoutStacksInput
+  connect: UserWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: UserUpdateWithoutStacksDataInput
+  upsert: UserUpsertWithoutStacksInput
+}
+
+input UserUpdateWithoutStacksDataInput {
+  githubId: String
+  name: String
+}
+
+input UserUpsertWithoutStacksInput {
+  update: UserUpdateWithoutStacksDataInput!
+  create: UserCreateWithoutStacksInput!
+}
+
+input UserWhereInput {
+  """Logical AND on all given filters."""
+  AND: [UserWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [UserWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [UserWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  githubId: String
+
+  """All values that are not equal to given value."""
+  githubId_not: String
+
+  """All values that are contained in given list."""
+  githubId_in: [String!]
+
+  """All values that are not contained in given list."""
+  githubId_not_in: [String!]
+
+  """All values less than the given value."""
+  githubId_lt: String
+
+  """All values less than or equal the given value."""
+  githubId_lte: String
+
+  """All values greater than the given value."""
+  githubId_gt: String
+
+  """All values greater than or equal the given value."""
+  githubId_gte: String
+
+  """All values containing the given string."""
+  githubId_contains: String
+
+  """All values not containing the given string."""
+  githubId_not_contains: String
+
+  """All values starting with the given string."""
+  githubId_starts_with: String
+
+  """All values not starting with the given string."""
+  githubId_not_starts_with: String
+
+  """All values ending with the given string."""
+  githubId_ends_with: String
+
+  """All values not ending with the given string."""
+  githubId_not_ends_with: String
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+  stacks_every: StackWhereInput
+  stacks_some: StackWhereInput
+  stacks_none: StackWhereInput
+}
+
+input UserWhereUniqueInput {
+  id: ID
+  githubId: String
 }

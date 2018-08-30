@@ -1,9 +1,22 @@
+type User {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+
+  githubId: String! @unique
+  name: String!
+
+  stacks: [Stack!]! @relation(name: "UserStack")
+}
+
 type Stack {
   id: ID! @unique
   createdAt: DateTime!
   updatedAt: DateTime!
   dependencies: [Dependency!]!
     @relation(name: "Dependencies", onDelete: CASCADE)
+
+  user: User @relation(name: "UserStack")
 }
 
 type Dependency {

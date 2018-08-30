@@ -30,6 +30,7 @@ type Owner {
 
 type Mutation {
   createStack(dependencies: [InputDependency!]!): Stack!
+  authenticate(code: String!): AuthPayload!
 }
 
 input InputDependency {
@@ -47,4 +48,15 @@ type Dependency {
   name: String!
   version: String!
   dev: Boolean!
+}
+
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
+type User {
+  id: ID!
+  name: String!
+  stacks: [Stack!]
 }

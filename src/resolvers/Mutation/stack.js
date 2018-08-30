@@ -1,4 +1,4 @@
-const Mutation = {
+const stack = {
   createStack(parent, args, ctx, info) {
     return ctx.db.mutation.createStack(
       { data: { dependencies: { create: args.dependencies } } },
@@ -7,4 +7,4 @@ const Mutation = {
   }
 };
 
-module.exports = { Mutation };
+module.exports = { stack };
