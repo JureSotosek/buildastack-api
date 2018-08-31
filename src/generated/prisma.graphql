@@ -1,5 +1,5 @@
 # source: https://buildastack-prisma.herokuapp.com/buildastack/dev
-# timestamp: Thu Aug 30 2018 22:19:08 GMT+0200 (Central European Summer Time)
+# timestamp: Fri Aug 31 2018 11:51:09 GMT+0200 (Central European Summer Time)
 
 type AggregateDependency {
   count: Int!
@@ -295,6 +295,7 @@ type Stack implements Node {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
+  name: String
   dependencies(where: DependencyWhereInput, orderBy: DependencyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Dependency!]
   user(where: UserWhereInput): User
 }
@@ -310,6 +311,7 @@ type StackConnection {
 }
 
 input StackCreateInput {
+  name: String
   dependencies: DependencyCreateManyInput
   user: UserCreateOneWithoutStacksInput
 }
@@ -320,6 +322,7 @@ input StackCreateManyWithoutUserInput {
 }
 
 input StackCreateWithoutUserInput {
+  name: String
   dependencies: DependencyCreateManyInput
 }
 
@@ -339,12 +342,15 @@ enum StackOrderByInput {
   createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
+  name_ASC
+  name_DESC
 }
 
 type StackPreviousValues {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
+  name: String
 }
 
 type StackSubscriptionPayload {
@@ -387,6 +393,7 @@ input StackSubscriptionWhereInput {
 }
 
 input StackUpdateInput {
+  name: String
   dependencies: DependencyUpdateManyInput
   user: UserUpdateOneWithoutStacksInput
 }
@@ -401,6 +408,7 @@ input StackUpdateManyWithoutUserInput {
 }
 
 input StackUpdateWithoutUserDataInput {
+  name: String
   dependencies: DependencyUpdateManyInput
 }
 
@@ -508,6 +516,46 @@ input StackWhereInput {
 
   """All values greater than or equal the given value."""
   updatedAt_gte: DateTime
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
   dependencies_every: DependencyWhereInput
   dependencies_some: DependencyWhereInput
   dependencies_none: DependencyWhereInput

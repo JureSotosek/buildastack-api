@@ -1,11 +1,54 @@
 type Query {
+  authenticate(code: String!): AuthPayload!
+  user: User!
+  stack(id: ID!): Stack
+  search(query: String!): [Package!]!
   suggestions(
     dependencies: [String!]
     devDependencies: [String!]
     limit: Int
   ): SuggestionsPayload!
-  search(query: String!): [Package!]!
-  stack(id: ID!): Stack
+}
+
+type Mutation {
+  createStack(dependencies: [InputDependency!]!): Stack!
+  saveStackNew(stack: InputStack!): Stack!
+  saveStackFromId(stackId: ID!, name: String!): Stack!
+}
+
+type User {
+  id: ID!
+  name: String!
+  stacks: [Stack!]
+}
+
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
+type Stack {
+  id: ID!
+  name: String
+  dependencies: [Dependency!]!
+  user: User
+}
+
+input InputStack {
+  name: String!
+  dependencies: [InputDependency!]!
+}
+
+type Dependency {
+  name: String!
+  version: String!
+  dev: Boolean!
+}
+
+input InputDependency {
+  name: String!
+  version: String!
+  dev: Boolean!
 }
 
 type SuggestionsPayload {
@@ -26,37 +69,4 @@ type Package {
 
 type Owner {
   name: String!
-}
-
-type Mutation {
-  createStack(dependencies: [InputDependency!]!): Stack!
-  authenticate(code: String!): AuthPayload!
-}
-
-input InputDependency {
-  name: String!
-  version: String!
-  dev: Boolean!
-}
-
-type Stack {
-  id: ID!
-  dependencies: [Dependency!]!
-}
-
-type Dependency {
-  name: String!
-  version: String!
-  dev: Boolean!
-}
-
-type AuthPayload {
-  token: String!
-  user: User!
-}
-
-type User {
-  id: ID!
-  name: String!
-  stacks: [Stack!]
 }
