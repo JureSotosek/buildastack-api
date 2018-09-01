@@ -1,5 +1,4 @@
 type Query {
-  authenticate(code: String!): AuthPayload!
   user: User!
   stack(id: ID!): Stack
   search(query: String!): [Package!]!
@@ -11,6 +10,7 @@ type Query {
 }
 
 type Mutation {
+  authenticate(code: String!): AuthPayload!
   createStack(dependencies: [InputDependency!]!): Stack!
   saveStackNew(stack: InputStack!): Stack!
   saveStackFromId(stackId: ID!, name: String!): Stack!
