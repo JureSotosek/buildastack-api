@@ -1,6 +1,7 @@
 type Query {
-  user: User!
-  stack(id: ID!): Stack
+  viewer: User!
+  user(githubId: ID): User
+  stack(id: ID!): StackPayload
   search(query: String!): [Package!]!
   suggestions(
     dependencies: [String!]
@@ -25,6 +26,11 @@ type User {
 type AuthPayload {
   token: String!
   user: User!
+}
+
+type StackPayload {
+  stack: Stack!
+  owner: Boolean!
 }
 
 type Stack {

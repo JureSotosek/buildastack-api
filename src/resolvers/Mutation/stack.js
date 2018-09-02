@@ -13,6 +13,7 @@ const stack = {
   saveStackNew(parent, { stack }, ctx, info) {
     try {
       const userId = getUserId(ctx);
+
       return ctx.db.mutation.createStack(
         {
           data: {

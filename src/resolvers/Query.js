@@ -5,21 +5,26 @@ const { suggestions } = require('../lib/suggestions');
 const { getUserId } = require('../utils');
 
 const Query = {
-  async user(parent, args, ctx, info) {
+  async viewer(parent, args, ctx, info) {
     try {
       const userId = getUserId(ctx);
+
       return ctx.db.query.user({ where: { id: userId } }, info);
     } catch (error) {
       throw new ForbiddenError(error);
     }
   },
 
-  async stack(parent, args, ctx, info) {
-    return ctx.db.query.stack({ where: { id: args.id } }, info);
+  async user(parent, { githubId }, ctx, info) {
+    return ctx.db.query.user({ where: { githubId } }, info);
   },
 
-  async search(parent, args, ctx, info) {
-    const response = await algoliaSearch(args.query);
+  async stack(parent, { id }, ctx, info) {
+    return ctx.db.query.stack({ where: { id } }, `{ id }`);
+  },
+
+  async search(parent, { query }, ctx, info) {
+    const response = await algoliaSearch(query);
 
     return response.hits;
   },
