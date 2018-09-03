@@ -1,6 +1,5 @@
 type Query {
   viewer: User!
-  user(githubId: ID): User
   stack(id: ID!): StackPayload
   search(query: String!): [Package!]!
   suggestions(

@@ -15,10 +15,6 @@ const Query = {
     }
   },
 
-  async user(parent, { githubId }, ctx, info) {
-    return ctx.db.query.user({ where: { githubId } }, info);
-  },
-
   async stack(parent, { id }, ctx, info) {
     return ctx.db.query.stack({ where: { id } }, `{ id }`);
   },
