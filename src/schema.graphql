@@ -15,6 +15,7 @@ type Mutation {
   createStack(dependencies: [InputDependency!]!): Stack!
   saveStackNew(stack: InputStack!): Stack!
   saveStackFromId(stackId: ID!, name: String!): Stack!
+  deleteStack(id: ID!): ID!
 }
 
 type User {

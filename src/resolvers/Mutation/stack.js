@@ -41,7 +41,7 @@ const stack = {
 
       const { dependencies } = await ctx.db.query.stack(
         { where: { id: stackId } },
-        ` { dependencies {name version dev} } `
+        ` { dependencies { name version dev } } `
       );
 
       return ctx.db.mutation.createStack(
@@ -60,6 +60,26 @@ const stack = {
         },
         info
       );
+    } catch (error) {
+      throw new ForbiddenError(error);
+    }
+  },
+
+  async deleteStack(parent, { id }, ctx, info) {
+    try {
+      const userId = getUserId(ctx);
+
+      const { user } = await ctx.db.query.stack(
+        { where: { id } },
+        ` { user { id } } `
+      );
+
+      if (user.id === userId) {
+        await ctx.db.mutation.deleteStack({ where: { id } });
+        return id;
+      } else {
+        throw 'Not the owner';
+      }
     } catch (error) {
       throw new ForbiddenError(error);
     }
