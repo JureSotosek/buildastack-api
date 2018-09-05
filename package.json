@@ -1,5 +1,5 @@
 {
-  "name": "buildastack-spi",
+  "name": "buildastack-api",
   "description": "",
   "author": {
     "name": "Jure Sotosek",
@@ -17,10 +17,13 @@
   "dependencies": {
     "algoliasearch": "^3.29.0",
     "apollo-link-http": "^1.5.4",
+    "apollo-server": "^2.0.5",
     "dotenv": "6.0.0",
     "elasticsearch": "^15.1.1",
+    "got": "^9.1.0",
     "graphql-yoga": "1.14.12",
-    "pouchdb": "^7.0.0"
+    "jsonwebtoken": "^8.3.0",
+    "prisma-binding": "^2.1.4"
   },
   "devDependencies": {
     "graphql-cli": "2.16.4",

@@ -9,16 +9,16 @@ const fetch = require('node-fetch');
 const suggestionsSchemaString = `
 type Query {
   suggestions(
-    dependencies: [String]
-    devDependencies: [String]
+    dependencies: [String!]
+    devDependencies: [String!]
     limit: Int
-  ): suggestionsPayload!
+  ): SuggestionsPayload!
 }
 
-type suggestionsPayload {
-  dependencies: [Package!]!
-  devDependencies: [Package!]!
-  allDependencies: [Package!]!
+type SuggestionsPayload {
+  suggestions: [Package!]!
+  devSuggestions: [Package!]!
+  allSuggestions: [Package!]!
 }
 
 type Package {
@@ -47,8 +47,15 @@ const schema = makeRemoteExecutableSchema({
   link
 });
 
-function suggestions(args, ctx, info) {
-  return delegateToSchema(schema, {}, 'query', 'suggestions', args, ctx, info);
+function suggestions(args, context, info) {
+  return delegateToSchema({
+    schema,
+    operation: 'query',
+    fieldName: 'suggestions',
+    args,
+    context,
+    info
+  });
 }
 
 module.exports = { suggestions };

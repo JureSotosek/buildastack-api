@@ -1,16 +1,74 @@
 type Query {
-  suggestions(
-    dependencies: [String]
-    devDependencies: [String]
-    limit: Int
-  ): suggestionsPayload!
+  viewer: User!
+  templateStacks: [TemplateStack!]!
+  stack(id: ID!): StackPayload
   search(query: String!): [Package!]!
+  suggestions(
+    dependencies: [String!]
+    devDependencies: [String!]
+    limit: Int
+  ): SuggestionsPayload!
 }
 
-type suggestionsPayload {
-  dependencies: [Package!]!
-  devDependencies: [Package!]!
-  allDependencies: [Package!]!
+type Mutation {
+  authenticate(code: String!): AuthPayload!
+  createStack(dependencies: [InputDependency!]!): Stack!
+  saveStackNew(stack: InputStack!): Stack!
+  saveStackFromId(stackId: ID!, name: String!): Stack!
+  deleteStack(id: ID!): ID!
+}
+
+type User {
+  id: ID!
+  name: String!
+  stacks: [Stack!]
+}
+
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
+type StackPayload {
+  stack: Stack!
+  owner: Boolean!
+}
+
+type Stack {
+  id: ID!
+  name: String
+  dependencies: [Dependency!]!
+  user: User
+}
+
+type TemplateStack {
+  id: ID!
+  name: String!
+  color: String!
+  dependencies: [Dependency!]!
+}
+
+input InputStack {
+  name: String!
+  dependencies: [InputDependency!]!
+}
+
+type Dependency {
+  name: String!
+  version: String!
+  dev: Boolean!
+}
+
+input InputDependency {
+  name: String!
+  version: String!
+  dev: Boolean!
+}
+
+type SuggestionsPayload {
+  suggestions: [Package!]!
+  devSuggestions: [Package!]!
+  allSuggestions: [Package!]!
 }
 
 type Package {

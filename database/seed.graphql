@@ -1,0 +1,52 @@
+mutation TemplateStacks {
+  react: createStack(
+    data: {
+      name: "React"
+      dependencies: {
+        create: [
+          { name: "react", version: "latest", dev: false }
+          { name: "react-dom", version: "latest", dev: false }
+          { name: "prop-types", version: "latest", dev: false }
+        ]
+      }
+      template: true
+      color: "#b9f4ff"
+    }
+  ) {
+    id
+  }
+
+  angular: createStack(
+    data: {
+      name: "Angular"
+      dependencies: {
+        create: [
+          { name: "angular", version: "latest", dev: false }
+          { name: "jquery", version: "latest", dev: false }
+          { name: "bootstrap", version: "latest", dev: false }
+        ]
+      }
+      template: true
+      color: "#fab2bd"
+    }
+  ) {
+    id
+  }
+
+  vuew: createStack(
+    data: {
+      name: "Vue"
+      dependencies: {
+        create: [
+          { name: "vue", version: "latest", dev: false }
+          { name: "vue-router", version: "latest", dev: false }
+          { name: "vuex", version: "latest", dev: false }
+        ]
+      }
+      template: true
+      color: "#b2ead8"
+    }
+  ) {
+    id
+  }
+}
