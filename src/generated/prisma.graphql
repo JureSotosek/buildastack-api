@@ -1,5 +1,5 @@
-# source: https://buildastack-prisma.herokuapp.com/buildastack/dev
-# timestamp: Fri Aug 31 2018 11:51:09 GMT+0200 (Central European Summer Time)
+# source: https://buildastack-prisma.herokuapp.com/buildastack/prod
+# timestamp: Wed Sep 05 2018 12:50:03 GMT+0200 (Central European Summer Time)
 
 type AggregateDependency {
   count: Int!
@@ -298,6 +298,8 @@ type Stack implements Node {
   name: String
   dependencies(where: DependencyWhereInput, orderBy: DependencyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Dependency!]
   user(where: UserWhereInput): User
+  template: Boolean
+  color: String
 }
 
 """A connection to a list of items."""
@@ -312,6 +314,8 @@ type StackConnection {
 
 input StackCreateInput {
   name: String
+  template: Boolean
+  color: String
   dependencies: DependencyCreateManyInput
   user: UserCreateOneWithoutStacksInput
 }
@@ -323,6 +327,8 @@ input StackCreateManyWithoutUserInput {
 
 input StackCreateWithoutUserInput {
   name: String
+  template: Boolean
+  color: String
   dependencies: DependencyCreateManyInput
 }
 
@@ -344,6 +350,10 @@ enum StackOrderByInput {
   updatedAt_DESC
   name_ASC
   name_DESC
+  template_ASC
+  template_DESC
+  color_ASC
+  color_DESC
 }
 
 type StackPreviousValues {
@@ -351,6 +361,8 @@ type StackPreviousValues {
   createdAt: DateTime!
   updatedAt: DateTime!
   name: String
+  template: Boolean
+  color: String
 }
 
 type StackSubscriptionPayload {
@@ -394,6 +406,8 @@ input StackSubscriptionWhereInput {
 
 input StackUpdateInput {
   name: String
+  template: Boolean
+  color: String
   dependencies: DependencyUpdateManyInput
   user: UserUpdateOneWithoutStacksInput
 }
@@ -409,6 +423,8 @@ input StackUpdateManyWithoutUserInput {
 
 input StackUpdateWithoutUserDataInput {
   name: String
+  template: Boolean
+  color: String
   dependencies: DependencyUpdateManyInput
 }
 
@@ -556,6 +572,50 @@ input StackWhereInput {
 
   """All values not ending with the given string."""
   name_not_ends_with: String
+  template: Boolean
+
+  """All values that are not equal to given value."""
+  template_not: Boolean
+  color: String
+
+  """All values that are not equal to given value."""
+  color_not: String
+
+  """All values that are contained in given list."""
+  color_in: [String!]
+
+  """All values that are not contained in given list."""
+  color_not_in: [String!]
+
+  """All values less than the given value."""
+  color_lt: String
+
+  """All values less than or equal the given value."""
+  color_lte: String
+
+  """All values greater than the given value."""
+  color_gt: String
+
+  """All values greater than or equal the given value."""
+  color_gte: String
+
+  """All values containing the given string."""
+  color_contains: String
+
+  """All values not containing the given string."""
+  color_not_contains: String
+
+  """All values starting with the given string."""
+  color_starts_with: String
+
+  """All values not starting with the given string."""
+  color_not_starts_with: String
+
+  """All values ending with the given string."""
+  color_ends_with: String
+
+  """All values not ending with the given string."""
+  color_not_ends_with: String
   dependencies_every: DependencyWhereInput
   dependencies_some: DependencyWhereInput
   dependencies_none: DependencyWhereInput

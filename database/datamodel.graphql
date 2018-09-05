@@ -13,11 +13,14 @@ type Stack {
   id: ID! @unique
   createdAt: DateTime!
   updatedAt: DateTime!
+
   name: String
   dependencies: [Dependency!]!
     @relation(name: "Dependencies", onDelete: CASCADE)
-
   user: User @relation(name: "UserStack")
+
+  template: Boolean
+  color: String
 }
 
 type Dependency {

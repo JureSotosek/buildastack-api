@@ -1,5 +1,6 @@
 type Query {
   viewer: User!
+  templateStacks: [TemplateStack!]!
   stack(id: ID!): StackPayload
   search(query: String!): [Package!]!
   suggestions(
@@ -38,6 +39,13 @@ type Stack {
   name: String
   dependencies: [Dependency!]!
   user: User
+}
+
+type TemplateStack {
+  id: ID!
+  name: String!
+  color: String!
+  dependencies: [Dependency!]!
 }
 
 input InputStack {

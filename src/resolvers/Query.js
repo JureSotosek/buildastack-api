@@ -5,7 +5,7 @@ const { suggestions } = require('../lib/suggestions');
 const { getUserId } = require('../utils');
 
 const Query = {
-  async viewer(parent, args, ctx, info) {
+  viewer(parent, args, ctx, info) {
     try {
       const userId = getUserId(ctx);
 
@@ -15,7 +15,14 @@ const Query = {
     }
   },
 
-  async stack(parent, { id }, ctx, info) {
+  templateStacks(parent, args, ctx, info) {
+    return ctx.db.query.stacks(
+      { where: { template: true } },
+      '{ id name color dependencies { name version dev }}'
+    );
+  },
+
+  stack(parent, { id }, ctx, info) {
     return ctx.db.query.stack({ where: { id } }, `{ id }`);
   },
 
