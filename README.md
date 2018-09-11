@@ -1,4 +1,4 @@
-# 🎯buildastack-api
+# buildastack-api
 
 A GraphQL API that serves as a backend for [Buildastack](https://buildastack.io).
 
