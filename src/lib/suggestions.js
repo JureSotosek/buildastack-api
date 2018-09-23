@@ -12,6 +12,7 @@ type Query {
     dependencies: [String!]
     devDependencies: [String!]
     limit: Int
+    page: Int
   ): SuggestionsPayload!
 }
 
