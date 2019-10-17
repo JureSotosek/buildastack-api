@@ -2,6 +2,8 @@ const { GraphQLServer } = require('graphql-yoga');
 const { Prisma } = require('prisma-binding');
 const resolvers = require('./resolvers');
 
+console.log('hej');
+
 const { config } = require('dotenv');
 config();
 
