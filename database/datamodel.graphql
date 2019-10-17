@@ -1,7 +1,7 @@
 type User {
-  id: ID! @unique
-  createdAt: DateTime!
-  updatedAt: DateTime!
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 
   githubId: String! @unique
   name: String!
@@ -10,9 +10,9 @@ type User {
 }
 
 type Stack {
-  id: ID! @unique
-  createdAt: DateTime!
-  updatedAt: DateTime!
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 
   name: String
   dependencies: [Dependency!]!
@@ -24,6 +24,7 @@ type Stack {
 }
 
 type Dependency {
+  id: ID! @id
   name: String!
   version: String!
   dev: Boolean!
