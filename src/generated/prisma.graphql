@@ -1,5 +1,5 @@
-# source: https://buildastack-prisma.herokuapp.com/buildastack/prod
-# timestamp: Wed Sep 05 2018 12:50:03 GMT+0200 (Central European Summer Time)
+# source: https://buildastack-5e801ac025.herokuapp.com/buildastack-api/prod
+# timestamp: Fri Oct 18 2019 16:14:45 GMT+0100 (British Summer Time)
 
 type AggregateDependency {
   count: Int!
@@ -20,7 +20,8 @@ type BatchPayload {
 
 scalar DateTime
 
-type Dependency {
+type Dependency implements Node {
+  id: ID!
   name: String!
   version: String!
   dev: Boolean!
@@ -37,6 +38,7 @@ type DependencyConnection {
 }
 
 input DependencyCreateInput {
+  id: ID
   name: String!
   version: String!
   dev: Boolean!
@@ -44,6 +46,7 @@ input DependencyCreateInput {
 
 input DependencyCreateManyInput {
   create: [DependencyCreateInput!]
+  connect: [DependencyWhereUniqueInput!]
 }
 
 """An edge in a connection."""
@@ -56,84 +59,72 @@ type DependencyEdge {
 }
 
 enum DependencyOrderByInput {
+  id_ASC
+  id_DESC
   name_ASC
   name_DESC
   version_ASC
   version_DESC
   dev_ASC
   dev_DESC
-  id_ASC
-  id_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-  createdAt_ASC
-  createdAt_DESC
 }
 
 type DependencyPreviousValues {
+  id: ID!
   name: String!
   version: String!
   dev: Boolean!
 }
 
-type DependencySubscriptionPayload {
-  mutation: MutationType!
-  node: Dependency
-  updatedFields: [String!]
-  previousValues: DependencyPreviousValues
-}
-
-input DependencySubscriptionWhereInput {
+input DependencyScalarWhereInput {
   """Logical AND on all given filters."""
-  AND: [DependencySubscriptionWhereInput!]
+  AND: [DependencyScalarWhereInput!]
 
   """Logical OR on all given filters."""
-  OR: [DependencySubscriptionWhereInput!]
+  OR: [DependencyScalarWhereInput!]
 
   """Logical NOT on all given filters combined by AND."""
-  NOT: [DependencySubscriptionWhereInput!]
+  NOT: [DependencyScalarWhereInput!]
+  id: ID
 
-  """
-  The subscription event gets dispatched when it's listed in mutation_in
-  """
-  mutation_in: [MutationType!]
+  """All values that are not equal to given value."""
+  id_not: ID
 
-  """
-  The subscription event gets only dispatched when one of the updated fields names is included in this list
-  """
-  updatedFields_contains: String
+  """All values that are contained in given list."""
+  id_in: [ID!]
 
-  """
-  The subscription event gets only dispatched when all of the field names included in this list have been updated
-  """
-  updatedFields_contains_every: [String!]
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
 
-  """
-  The subscription event gets only dispatched when some of the field names included in this list have been updated
-  """
-  updatedFields_contains_some: [String!]
-  node: DependencyWhereInput
-}
+  """All values less than the given value."""
+  id_lt: ID
 
-input DependencyUpdateInput {
-  name: String
-  version: String
-  dev: Boolean
-}
+  """All values less than or equal the given value."""
+  id_lte: ID
 
-input DependencyUpdateManyInput {
-  create: [DependencyCreateInput!]
-}
+  """All values greater than the given value."""
+  id_gt: ID
 
-input DependencyWhereInput {
-  """Logical AND on all given filters."""
-  AND: [DependencyWhereInput!]
+  """All values greater than or equal the given value."""
+  id_gte: ID
 
-  """Logical OR on all given filters."""
-  OR: [DependencyWhereInput!]
+  """All values containing the given string."""
+  id_contains: ID
 
-  """Logical NOT on all given filters combined by AND."""
-  NOT: [DependencyWhereInput!]
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
   name: String
 
   """All values that are not equal to given value."""
@@ -218,9 +209,236 @@ input DependencyWhereInput {
 
   """All values that are not equal to given value."""
   dev_not: Boolean
-  _MagicalBackRelation_Dependencies_every: StackWhereInput
-  _MagicalBackRelation_Dependencies_some: StackWhereInput
-  _MagicalBackRelation_Dependencies_none: StackWhereInput
+}
+
+type DependencySubscriptionPayload {
+  mutation: MutationType!
+  node: Dependency
+  updatedFields: [String!]
+  previousValues: DependencyPreviousValues
+}
+
+input DependencySubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [DependencySubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [DependencySubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [DependencySubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: DependencyWhereInput
+}
+
+input DependencyUpdateDataInput {
+  name: String
+  version: String
+  dev: Boolean
+}
+
+input DependencyUpdateInput {
+  name: String
+  version: String
+  dev: Boolean
+}
+
+input DependencyUpdateManyDataInput {
+  name: String
+  version: String
+  dev: Boolean
+}
+
+input DependencyUpdateManyInput {
+  create: [DependencyCreateInput!]
+  connect: [DependencyWhereUniqueInput!]
+  set: [DependencyWhereUniqueInput!]
+  disconnect: [DependencyWhereUniqueInput!]
+  delete: [DependencyWhereUniqueInput!]
+  update: [DependencyUpdateWithWhereUniqueNestedInput!]
+  updateMany: [DependencyUpdateManyWithWhereNestedInput!]
+  deleteMany: [DependencyScalarWhereInput!]
+  upsert: [DependencyUpsertWithWhereUniqueNestedInput!]
+}
+
+input DependencyUpdateManyMutationInput {
+  name: String
+  version: String
+  dev: Boolean
+}
+
+input DependencyUpdateManyWithWhereNestedInput {
+  where: DependencyScalarWhereInput!
+  data: DependencyUpdateManyDataInput!
+}
+
+input DependencyUpdateWithWhereUniqueNestedInput {
+  where: DependencyWhereUniqueInput!
+  data: DependencyUpdateDataInput!
+}
+
+input DependencyUpsertWithWhereUniqueNestedInput {
+  where: DependencyWhereUniqueInput!
+  update: DependencyUpdateDataInput!
+  create: DependencyCreateInput!
+}
+
+input DependencyWhereInput {
+  """Logical AND on all given filters."""
+  AND: [DependencyWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [DependencyWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [DependencyWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+  version: String
+
+  """All values that are not equal to given value."""
+  version_not: String
+
+  """All values that are contained in given list."""
+  version_in: [String!]
+
+  """All values that are not contained in given list."""
+  version_not_in: [String!]
+
+  """All values less than the given value."""
+  version_lt: String
+
+  """All values less than or equal the given value."""
+  version_lte: String
+
+  """All values greater than the given value."""
+  version_gt: String
+
+  """All values greater than or equal the given value."""
+  version_gte: String
+
+  """All values containing the given string."""
+  version_contains: String
+
+  """All values not containing the given string."""
+  version_not_contains: String
+
+  """All values starting with the given string."""
+  version_starts_with: String
+
+  """All values not starting with the given string."""
+  version_not_starts_with: String
+
+  """All values ending with the given string."""
+  version_ends_with: String
+
+  """All values not ending with the given string."""
+  version_not_ends_with: String
+  dev: Boolean
+
+  """All values that are not equal to given value."""
+  dev_not: Boolean
+}
+
+input DependencyWhereUniqueInput {
+  id: ID
 }
 
 """
@@ -235,13 +453,16 @@ type Mutation {
   createDependency(data: DependencyCreateInput!): Dependency!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateStack(data: StackUpdateInput!, where: StackWhereUniqueInput!): Stack
+  updateDependency(data: DependencyUpdateInput!, where: DependencyWhereUniqueInput!): Dependency
   deleteUser(where: UserWhereUniqueInput!): User
   deleteStack(where: StackWhereUniqueInput!): Stack
+  deleteDependency(where: DependencyWhereUniqueInput!): Dependency
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   upsertStack(where: StackWhereUniqueInput!, create: StackCreateInput!, update: StackUpdateInput!): Stack!
-  updateManyUsers(data: UserUpdateInput!, where: UserWhereInput): BatchPayload!
-  updateManyStacks(data: StackUpdateInput!, where: StackWhereInput): BatchPayload!
-  updateManyDependencies(data: DependencyUpdateInput!, where: DependencyWhereInput): BatchPayload!
+  upsertDependency(where: DependencyWhereUniqueInput!, create: DependencyCreateInput!, update: DependencyUpdateInput!): Dependency!
+  updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
+  updateManyStacks(data: StackUpdateManyMutationInput!, where: StackWhereInput): BatchPayload!
+  updateManyDependencies(data: DependencyUpdateManyMutationInput!, where: DependencyWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
   deleteManyStacks(where: StackWhereInput): BatchPayload!
   deleteManyDependencies(where: DependencyWhereInput): BatchPayload!
@@ -280,6 +501,7 @@ type Query {
   dependencies(where: DependencyWhereInput, orderBy: DependencyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Dependency]!
   user(where: UserWhereUniqueInput!): User
   stack(where: StackWhereUniqueInput!): Stack
+  dependency(where: DependencyWhereUniqueInput!): Dependency
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
   stacksConnection(where: StackWhereInput, orderBy: StackOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StackConnection!
   dependenciesConnection(where: DependencyWhereInput, orderBy: DependencyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DependencyConnection!
@@ -297,7 +519,7 @@ type Stack implements Node {
   updatedAt: DateTime!
   name: String
   dependencies(where: DependencyWhereInput, orderBy: DependencyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Dependency!]
-  user(where: UserWhereInput): User
+  user: User
   template: Boolean
   color: String
 }
@@ -313,6 +535,7 @@ type StackConnection {
 }
 
 input StackCreateInput {
+  id: ID
   name: String
   template: Boolean
   color: String
@@ -326,6 +549,7 @@ input StackCreateManyWithoutUserInput {
 }
 
 input StackCreateWithoutUserInput {
+  id: ID
   name: String
   template: Boolean
   color: String
@@ -363,6 +587,185 @@ type StackPreviousValues {
   name: String
   template: Boolean
   color: String
+}
+
+input StackScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [StackScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [StackScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [StackScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+  template: Boolean
+
+  """All values that are not equal to given value."""
+  template_not: Boolean
+  color: String
+
+  """All values that are not equal to given value."""
+  color_not: String
+
+  """All values that are contained in given list."""
+  color_in: [String!]
+
+  """All values that are not contained in given list."""
+  color_not_in: [String!]
+
+  """All values less than the given value."""
+  color_lt: String
+
+  """All values less than or equal the given value."""
+  color_lte: String
+
+  """All values greater than the given value."""
+  color_gt: String
+
+  """All values greater than or equal the given value."""
+  color_gte: String
+
+  """All values containing the given string."""
+  color_contains: String
+
+  """All values not containing the given string."""
+  color_not_contains: String
+
+  """All values starting with the given string."""
+  color_starts_with: String
+
+  """All values not starting with the given string."""
+  color_not_starts_with: String
+
+  """All values ending with the given string."""
+  color_ends_with: String
+
+  """All values not ending with the given string."""
+  color_not_ends_with: String
 }
 
 type StackSubscriptionPayload {
@@ -412,13 +815,33 @@ input StackUpdateInput {
   user: UserUpdateOneWithoutStacksInput
 }
 
+input StackUpdateManyDataInput {
+  name: String
+  template: Boolean
+  color: String
+}
+
+input StackUpdateManyMutationInput {
+  name: String
+  template: Boolean
+  color: String
+}
+
 input StackUpdateManyWithoutUserInput {
   create: [StackCreateWithoutUserInput!]
   connect: [StackWhereUniqueInput!]
+  set: [StackWhereUniqueInput!]
   disconnect: [StackWhereUniqueInput!]
   delete: [StackWhereUniqueInput!]
   update: [StackUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [StackUpdateManyWithWhereNestedInput!]
+  deleteMany: [StackScalarWhereInput!]
   upsert: [StackUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input StackUpdateManyWithWhereNestedInput {
+  where: StackScalarWhereInput!
+  data: StackUpdateManyDataInput!
 }
 
 input StackUpdateWithoutUserDataInput {
@@ -652,6 +1075,7 @@ type UserConnection {
 }
 
 input UserCreateInput {
+  id: ID
   githubId: String!
   name: String!
   stacks: StackCreateManyWithoutUserInput
@@ -663,6 +1087,7 @@ input UserCreateOneWithoutStacksInput {
 }
 
 input UserCreateWithoutStacksInput {
+  id: ID
   githubId: String!
   name: String!
 }
@@ -740,6 +1165,11 @@ input UserUpdateInput {
   githubId: String
   name: String
   stacks: StackUpdateManyWithoutUserInput
+}
+
+input UserUpdateManyMutationInput {
+  githubId: String
+  name: String
 }
 
 input UserUpdateOneWithoutStacksInput {
