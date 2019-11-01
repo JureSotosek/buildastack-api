@@ -40,7 +40,10 @@ const introscpectionSchema = makeExecutableSchema({
   typeDefs: suggestionsSchemaString
 });
 
-const link = new HttpLink({ uri: 'https://npm-suggestions.now.sh/', fetch });
+const link = new HttpLink({
+  uri: 'https://npm-suggestions.herokuapp.com/',
+  fetch
+});
 
 const schema = makeRemoteExecutableSchema({
   schema: introscpectionSchema,
