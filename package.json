@@ -20,7 +20,7 @@
     "apollo-server": "^2.0.5",
     "dotenv": "6.0.0",
     "elasticsearch": "^15.1.1",
-    "got": "^9.1.0",
+    "got": "^11.8.5",
     "graphql-yoga": "1.14.12",
     "jsonwebtoken": "^8.3.0",
     "node-fetch": "^2.6.0",
